@@ -1,0 +1,91 @@
+﻿<link href="~/Content/token/css/bootstrap-tokenfield.css" rel="stylesheet" />
+<style>
+    .tokenfield{
+        background-color:rgba(51,51,51,0.4);
+        color:#31aae9;
+    }
+</style> 
+<div class="background-dark">
+        <!------------------------------------------------------------------------------------------->
+                    <div class="content container">
+                        <h2 class="page-title">Post Idea <small>Write Idea description :</small></h2>
+                       <div class="row">
+                           <div class="col-lg-8">
+                               <section class="widget">
+                                   <header>
+                                       <h4><i class="fa fa-file-alt"></i> Idea <small>:</small></h4>
+                                   </header>
+                                   <div class="body">
+                                       <form class="form-horizontal" role="form" id="article-form" method="post" novalidate="novalidate"
+                                             data-parsley-priority-enabled="false" action="~/Home/saveIdea">
+                                           <fieldset>
+                                               <div class="form-group">
+                                                   <label class="col-sm-3 control-label" for="title">Title <span class="required">*</span></label>
+                                                   <div class="col-sm-9">
+                                                       <input type="text" id="title" name="post_title" class="form-control input-transparent"
+                                                              required="required">
+                                                   </div>
+                                               </div>
+                                               <div class="form-group">
+                                                   <label class="col-sm-3 control-label" for="content">
+                                                       Content
+                                                   </label>
+                                                   <div class="col-sm-9">
+                                                       <textarea rows="10" class="form-control input-transparent" name="post_data" id="content"></textarea>
+                                                   </div>
+                                               </div>
+                                               <div class="form-group">
+                                                   <label for="description" class="col-sm-3 control-label">Description</label>
+                                                   <div class="col-sm-9">
+                                                       <textarea id="description" rows="3" name="post_description" class="form-control input-transparent"></textarea>
+                                                       <span class="help-block">Optional summary of your article that can be used in previews</span>
+                                                   </div>
+                                               </div>
+                                               <div class="form-group">
+                                                   <label for="description" class="col-sm-3 control-label">Tags for Search</label>
+                                                   <div class="col-sm-9">
+                                                       <input id="tags" rows="3" name="post_tags" class="form-control" style="background-color:rgb(51,51,51)" />
+                                                       <span class="help-block">words that people can serach for your idea seperated by comma tab or enter</span>
+                                                   </div>
+                                               </div>
+                                           </fieldset>
+                                           <div class="form-actions">
+                                               <div class="row">
+                                                   <div class="col-sm-9 col-sm-offset-3">
+                                                       <div class="btn-toolbar">
+                                                           <button type="submit" class="btn btn-success">Submit</button>
+                                                           <button type="button" class="btn btn-default">Cancel</button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </form>
+                                   </div>
+                               </section>
+                           </div>
+                            </div>
+                        </div>
+</div>
+
+@section script{
+    
+     <!-- page specific scripts -->
+<!-- page libs -->
+<script src="~/Content/lib1/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="~/Content/lib1/select2/select2.js"></script>
+<script src="~/Content/lib1/moment/moment.js"></script>
+<script src="~/Content/lib1/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.js"></script>
+<script src="~/Content/lib1/jquery.maskedinput/dist/jquery.maskedinput.min.js"></script>
+<script src="~/Content/lib1/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js"></script>
+<script src="~/Content/lib1/parsleyjs/dist/parsley.js"></script>
+    <script src="~/Content/token/bootstrap-tokenfield.js"></script>
+
+<!-- page application js -->
+<script src="~/Scripts/js1/forms-article.js"></script>
+    
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $('#tags').tokenfield();
+      })
+    </script>  
+    }

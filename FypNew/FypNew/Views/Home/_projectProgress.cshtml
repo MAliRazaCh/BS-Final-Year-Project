@@ -1,0 +1,12 @@
+﻿@foreach (var v in Model)
+{
+    if (!v.link.Contains(".pdf"))
+    {
+        string vs = "~/Content/projectsData/" + v.link;
+        <li class="col-sm-4">
+            <a href=@Url.Content(vs) class="thumbnail">
+                <img src=@Url.Content(vs) alt="">
+            </a>
+        </li>
+    }
+}

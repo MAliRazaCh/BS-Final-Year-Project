@@ -1,0 +1,61 @@
+﻿<style>
+    tr {
+        cursor: pointer;
+    }
+</style>
+<div class="content container">
+    <h2 class="page-title">Projects <span class="fw-semi-bold">Table</span></h2>
+    <div class="row">
+        <div class="col-md-12">
+            <section class="widget">
+
+                <div class="body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="hidden-xs">#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th class="hidden-xs">Starting Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @model System.Collections.Generic.IEnumerable<FypNew.Models.ProjectPostModel>
+                            @{
+                                var i = 1;
+                                foreach (var v in Model)
+                                {
+                                    <tr onclick="location.href='@Url.Action("projectProgress" , "Home" , new{ id = v.project.project_id})'">
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            @v.post_idea.post_title
+                                        </td>
+                                        <td class="hidden-xs">
+                                            <p>
+                                                @v.post_idea.post_description
+                                            </p>
+                                        </td>
+                                        <td class="hidden-xs text-muted">
+                                            @v.project.startDate
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="loader-wrap hiding hide">
+    <i class="fa fa-circle-o-notch fa-spin"></i>
+</div>
+
+@section script{
+    <script src="~/Content/lib1/jquery.sparkline/index.js"></script>
+    <script src="~/Scripts/js1/tables-static.js"></script>
+}

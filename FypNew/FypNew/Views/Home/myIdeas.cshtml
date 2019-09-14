@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Homepage";
+}
+@model System.Collections.Generic.IEnumerable<FypNew.Models.PostTable>
+<div id="pageStart">
+    @foreach (var v in Model)
+    {
+        <div class="form-group">
+            <div class="col-sm-9">
+                <a href="@Url.Action("profile", "Home", new { id = v.post_userID })"><img class="img-thumbnail" name="profilePic" onerror="this.onerror = null; this.src = '@Url.Content("/Content/0.jpg")';" src="@Url.Content(String.Format("~/Content/profilePic/" + v.post_userID + ".jpg"))"  alt="64x64" style="height: 50px;width:50px;" id="@v.post_userID" /></a><br />
+                <a href="@Url.Action("ideaDetail", "Home", new { obj = v.post_Id })"><label type=" button" class="btn btn-default" id="@v.post_Id" onclick="showDetail(this)" style="font-weight:bold">Idea Title: @v.post_title</label></a>
+                <textarea rows="8" readonly class="form-control input-transparent" name="post_data" id="content">@v.post_data</textarea>
+            </div>
+        </div>
+    }
+</div>
+@section script{
+
+    <!-- page libs -->
+    <script src="~/Content/lib1/slimScroll/jquery.slimscroll.js"></script>
+    <script src="~/Content/lib1/jquery.sparkline/index.js"></script>
+
+    <script src="~/Content/lib1/backbone/backbone.js"></script>
+    <script src="~/Content/lib1/backbone.localStorage/backbone.localStorage.js"></script>
+
+    <script src="~/Content/lib1/d3/d3.js"></script>
+    <script src="~/Content/lib1/nvd3/build/nv.d3.js"></script>
+
+    <!-- page application js -->
+    <script src="~/Scripts/js1/index.js"></script>
+}

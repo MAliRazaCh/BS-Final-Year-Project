@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "search";
+}
+@model System.Collections.Generic.IEnumerable<FypNew.Models.PostTable>
+       
+           
+    
+         
+<div class="content container">
+        <h2 class="page-title">Matching - <span class="fw-semi-bold">Results</span></h2>
+    <div class="row">       
+      <div class="col-lg-9">
+        
+          @if (Model.Count() > 0)
+          {
+              foreach (var v in Model)
+              {
+                <section class="search-result-item">
+                    <a class="image-link" href="@Url.Action("profile", "Home", new {id = v.post_userID })">
+                        <img class="image" src=@Url.Content("~/Content/ProfilePic/" + v.post_userID + ".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" style=" height: 50px; width:50px">
+                    </a>
+                    <a href="@Url.Action("ideaDetail", "Home", new { obj = v.post_Id })">
+                        <div class="search-result-item-body">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h4 class="search-result-item-heading">
+                                        <label>@v.post_title</label>
+                                    </h4>
+                                    <p class="time">
+                                        @v.post_time
+                                    </p>
+                                    <p class="description">
+                                        @v.post_data
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </section>
+              }
+          }
+        
+        
+        </div>
+    </div>
+</div>
+            <div class="loader-wrap hiding hide">
+                <i class="fa fa-circle-o-notch fa-spin"></i>
+            </div>

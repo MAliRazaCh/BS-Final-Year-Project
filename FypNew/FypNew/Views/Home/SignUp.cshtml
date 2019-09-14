@@ -1,0 +1,238 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/Content/bootstrap-datePicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+<html>
+
+<head>
+        <title>
+            @ViewBag.Title
+        </title>
+
+   @Scripts.Render("~/bundles/jquery")
+   @Styles.Render("~/Content/css")
+   @Scripts.Render("~/bundles/modernizr")
+    
+    <link href="~/Content/css1/application.css" rel="stylesheet">
+    <link rel="shortcut icon" href="~/Content/img1/favicon.png">
+    <meta http-equiv="content-type" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+     <script>
+        /* yeah we need this empty stylesheet here. It's cool chrome & chromium fix
+           chrome fix https://code.google.com/p/chromium/issues/detail?id=167083
+                      https://code.google.com/p/chromium/issues/detail?id=332189
+        */
+    </script>
+    <style>
+        #profilePic {
+            margin-left: 50px;
+        }
+
+        #iconID {
+            opacity: 200;
+        }
+
+        #TextID {
+            font-weight: bold;
+            margin-top: -80px;
+        }
+
+        #photo {
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h3><strong>Idea Sharing Platform</strong></h3>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-10" style="margin-left:120px">
+                <section class="widget">
+                    <header>
+                        <h3><i class="fa fa-user"></i> Sign Up</h3>
+                    </header>
+                    <div class="body">
+                        <form id="user-form" enctype="multipart/form-data" class=" form-horizontal form-label-left"
+                              novalidate="novalidate"
+                              method="post"
+                              data-parsley-priority-enabled="false"
+                              data-parsley-excluded="input[name=gender]" action="~/Home/createprofile">
+                            <input type="file" accept="image/*" name="photo" id="photo" />
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="text-align-center">
+                                        <img class="img-circle" id="logo_pic" src="~/Content/img1/16.jpg" onclick="mouseClick(this)" onmouseout="mouseout(this)" onmouseover="mouseover(this)" alt="64x64" style="height: 112px;width:112px;">
+                                        <h3 id="TextID" hidden>Upload</h3>
+                                        <img id="iconID" hidden src="~/Content/cameraIcon.jpg" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <h3 class="mt-sm mb-xs">Ideas</h3>
+                                    <address>
+                                        <strong>IDEA Sharing Platform</strong>a Web Based System<br />
+                                        to Share the Thoughts of <strong>People.</strong>
+                                    </address>
+                                </div>
+                            </div>
+
+                            <fieldset>
+                                <legend class="section">Personal Info</legend>
+                                <input type="file" name="photo" id="photo" />
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="first-name">Full Name <span class="required">*</span></label>
+                                    <div class="col-sm-6"><input type="text" id="first-name" name="user_FullName" required="required" class="form-control input-transparent"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-sm-4">User Description </label>
+                                    <div class="col-sm-6"><input id="middle-name" class="form-control input-transparent" type="text" name="user_description" value=""></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Gender</label>
+                                    <div class="col-sm-8">
+                                        <div id="gender" class="btn-group" data-toggle="buttons">
+                                            <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                <input type="radio" name="user_gender" value="0"> &nbsp; Male &nbsp;
+                                            </label>
+                                            <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                <input type="radio" name="user_gender" value="1" checked> Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-of-birth" class="control-label col-sm-4">Date Of Birth <span class="required">*</span></label>
+                                    <div class="col-sm-6"><input id="date-of-birth" class="form-control input-transparent" required="required" type="text" name="user_DOB" value=""></div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="prefix">User Name<span class="required">*</span></label>
+                                    <div class="col-sm-6">
+                                        <input type="text" id="username" onchange="nameChanged(this)" name="user_userName" required="required" class="form-control input-transparent">
+                                        <label hidden id="msgID" class="control-label" for="user_userName"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="password">Password <span class="required">*</span></label>
+                                    <div class="col-sm-6"><input type="password" id="password" name="user_userpassword" required="required" class="form-control input-transparent"></div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend class="section">Contact Info</legend>
+                                <div class="form-group">
+                                    <label id="email-label" for="email" class="control-label col-sm-4">Email <span class="required">*</span></label>
+                                    <div class=" col-sm-6">
+                                        <input id="email" type="email"
+                                               data-trigger="change" required="required"
+                                               class="form-control input-transparent"
+                                               name="user_emailid">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="form-group">
+                                <label for="phone" class="control-label col-sm-4">Contact NO <span class="required">*</span></label>
+                                <div class=" col-sm-6">
+                                    <input id="phone" class="form-control input-transparent  mask" required="required" type="text" name="user_phoneNo" maxlength="28">
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend class="section">
+                                    Address
+                                </legend>
+                                <div class="form-group">
+                                    <label for="address" class="control-label col-sm-4">Address <span class="required">*</span></label>
+                                    <div class=" col-sm-6">
+                                        <input id="address" class="form-control input-transparent" type="text" name="user_address">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-4">
+                                        <button type="submit" class="btn btn-primary">Validate &amp; Submit</button>
+                                        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Login","Home")'">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="loader-wrap hiding hide">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+    </div>
+</body>
+</html>
+<!-------------------------------------------------------------------------------------------------------------->
+<script src="~/Content/bootstrap-datePicker/js/bootstrap-datepicker.js"></script>
+@*<script src="~/Content/lib1/bootstrap-select/dist/js/bootstrap-select.js"></script>*@
+<script src="~/Content/lib1/select2/select2.js"></script>
+<script src="~/Content/lib1/moment/moment.js"></script>
+<script src="~/Content/lib1/parsleyjs/dist/parsley.js"></script>
+    <!-- page application js -->
+<script src="~/Scripts/js1/forms-account.js"></script>
+
+   
+<script type="text/javascript">
+    $('#date-of-birth').datepicker();
+    function mouseover(x) {
+        x.style.opacity = 0.4;
+        document.getElementById("TextID").hidden = false;
+        document.getElementById("iconID").hidden = false;
+    }
+    function mouseout(x) {
+        x.style.opacity = 1;
+        document.getElementById("TextID").hidden = true;
+        document.getElementById("iconID").hidden = true;
+    }
+    function mouseClick(x) {
+
+        $('#photo').trigger('click');
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#logo_pic').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#photo").change(function () {
+        readURL(this);
+    });
+
+    function nameChanged(x) {
+
+        var a = document.getElementById("username").value;
+
+        $.ajax({
+            url: '@Url.Action("chkUserName" , "Home")',
+            data: { Value: a },
+            type: "POST",
+            success: function (data) {
+                if (data == 0) {
+                    $("#msgID").text("This user Name is availabe");
+                    $("#msgID").removeClass('text-danger');
+                    $("#msgID").addClass('text-success');
+                }
+                else {
+                    $("#msgID").text("This user Name is not availabe check an other one");
+                    $("#msgID").removeClass('text-success');
+                    $("#msgID").addClass('text-danger');
+                }
+
+                $("#msgID").show();
+            },
+        });
+    }
+</script>

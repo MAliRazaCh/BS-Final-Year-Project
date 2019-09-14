@@ -1,0 +1,126 @@
+﻿@model FypNew.Models.UserTable
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+-
+@{
+
+    var v = Model;
+    string picPath = "~/Content/ProfilePic/" + v.user_Id + ".jpg";
+
+    <div class="content container">
+        <h2 class="page-title">@v.user_FullName</h2>
+        <div class="row">
+            <div class="col-md-10">
+                <section class="widget">
+                    <header>
+                        <h4><i class="fa fa-user"></i> Account Profile </h4>
+                    </header>
+                    <div class="body">
+                        <input type="text" value=@v.user_Id hidden name="user_Id" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="text-align-center">
+                                    <img class="img-circle" id="profilePic2" name="profilePic" src=@Url.Content(picPath) onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="64x64" style=" height: 150px; width:150px">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3 class="mt-sm mb-xs">@v.user_FullName</h3>
+                                <address>
+                                    <strong>@v.user_description</strong> <br>
+                                    <abbr title="Work email">e-mail:</abbr>@v.user_emailid<br>
+                                    <abbr title="Work Phone">phone:</abbr> @v.user_phoneNo
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+    <div class="loader-wrap hiding hide">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+    </div>
+}
+@section script{
+    <script>
+
+        function error(x) {
+            document.getElementById('profilePic2').setAttribute("src", "/Content/0.jpg");
+        }
+
+        function readonly_message(x) {
+            document.getElementById("msgDiv").hidden = false;
+        }
+
+        @*if(@ViewBag.isAdmin == 1)
+        {
+            document.onload=changePermission();
+        }
+
+        function changePermission()
+        {
+            $(".editDiv").hide();
+        }*@
+    </script>
+
+}
+
+
+<!-------------------------------------------------------------------------------------------------------------->
+<!-- common templates -->
+<script type="text/template" id="settings-template">
+    <div class="setting clearfix">
+        <div>Background</div>
+        <div id="background-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% dark = background == 'dark'; light = background == 'light';%>
+            <button type="button" data-value="dark" class="btn btn-sm btn-default <%= dark? 'active' : '' %>">Dark</button>
+            <button type="button" data-value="light" class="btn btn-sm btn-default <%= light? 'active' : '' %>">Light</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>Sidebar on the</div>
+        <div id="sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% onRight = sidebar == 'right'%>
+            <button type="button" data-value="left" class="btn btn-sm btn-default <%= onRight? '' : 'active' %>">Left</button>
+            <button type="button" data-value="right" class="btn btn-sm btn-default <%= onRight? 'active' : '' %>">Right</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>Sidebar</div>
+        <div id="display-sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% display = displaySidebar%>
+            <button type="button" data-value="true" class="btn btn-sm btn-default <%= display? 'active' : '' %>">Show</button>
+            <button type="button" data-value="false" class="btn btn-sm btn-default <%= display? '' : 'active' %>">Hide</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>White Version</div>
+        <div>
+            <a href="../white/index.html" class="btn btn-sm btn-default">&nbsp; Switch &nbsp;   <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="sidebar-settings-template">
+    <% auto = sidebarState == 'auto'%>
+    <% if (auto) {%>
+    <button type="button"
+            data-value="icons"
+            class="btn-icons btn btn-transparent btn-sm">
+        Icons
+    </button>
+    <button type="button"
+            data-value="auto"
+            class="btn-auto btn btn-transparent btn-sm">
+        Auto
+    </button>
+    <%} else {%>
+    <button type="button"
+            data-value="auto"
+            class="btn btn-transparent btn-sm">
+        Auto
+    </button>
+    <% } %>
+</script>
+

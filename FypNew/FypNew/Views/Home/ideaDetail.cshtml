@@ -1,0 +1,257 @@
+﻿@model  FypNew.Models.ideaDetail
+
+@{var v = Model;
+FypNew.Models.DatabaseEntities db = new FypNew.Models.DatabaseEntities();
+}
+<div class="row">
+    <section class="widget col-lg-9">
+        <div class="body">
+            <div class="row">
+                <div class="col-sm-9">
+                    <header>
+                        <h4><i class="fa fa-user"></i>User Info</h4>
+                    </header>
+                </div>
+            </div>
+            <a href="@Url.Action("profile", "Home", new { id = v.userData.user_Id})">
+            <div class="row">
+                <div class="col-sm-3">
+                    <img class="img-circle" id="profilePic2" name="profilePic" src=@Url.Content("~/Content/ProfilePic/" +v.userData.user_Id + ".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="" style=" height: 100px; width:100px">
+                </div>
+                <div class="col-sm-" 9>
+                    <h3 class="mt-sm mb-xs">@v.userData.user_FullName</h3>
+                    <address>
+                        <strong>@v.userData.user_description</strong> <br>
+                        <abbr title="Work email">e-mail:</abbr>@v.userData.user_emailid<br>
+                        <abbr title="Work Phone">phone:</abbr> @v.userData.user_phoneNo
+                    </address>
+                </div>
+            </div>
+            </a>
+        </div>
+    </section>
+    <section class="widget col-lg-9">
+        <h2 class="page-title"><mark>detail Idea</mark></h2>
+        <div class="row">
+            <header>
+                <h4><i class="fa fa-file-alt"></i> Idea detail</h4>
+            </header>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="title">Title <span class="required">*</span></label>
+                    <div class="col-sm-9">
+                        <textarea type="text" id="title" readonly name="post_title" class="form-control input-transparent"
+                               required="required">@v.postData.post_title</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="content">
+                        Content
+                    </label>
+                    <div class="col-sm-9">
+                        <textarea rows="10" readonly class="form-control input-transparent" name="post_data" id="content">@v.postData.post_data</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea id="description" readonly rows="3" name="post_description" class="form-control input-transparent">@v.postData.post_description</textarea>
+                    </div>
+                </div>
+            </fieldset>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <div class="btn-toolbar">
+                                <button type="button" id="likebtn" onclick="likeClick(this)" class="btn btn-default"><i class="fa fa-thumbs-up">  <span class="label label-success" id="count">@Model.likeData.Count</span></i></button>
+
+                                <button type="button" id="okbtn" onclick="location.href='@Url.Action("homepage" , "Home")'" class="btn btn-default">OK</button>
+
+                                <button type="button" id="builtIdeaBtn" class="btn btn-default" onclick="location.href='@Url.Action("projectHome", "Home", new { postId = v.postData.post_Id })'">build Idea</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+</div>
+
+<!---- Comments Session--------->
+<div class="row">
+    <section class="widget col-lg-9">
+        <header>
+            <h4>
+                <mark>Commments</mark>
+            </h4>
+            <div class="widget-controls">
+                <a data-widgster="expand" title="expand"><i class="glyphicon glyphicon-minus"></i></a>
+                <a data-widgster="collapse" title="Collapse" href="#"><i class="glyphicon glyphicon-minus"></i></a>
+            </div>
+        </header>
+        <div class="body">
+            <div id="chat" class="chat">
+                <div id="chat-messages" class="chat-messages">
+                    @if (Model.commentData != null)
+                    {
+                        foreach (var x in Model.commentData)
+                        {
+                            <div class="chat-message">
+                                <div class="sender pull-left">
+                                    <div class="icon">
+                                        <img src=@Url.Content("~/Content/profilePic/"+x.cmnt.comment_userID+".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" class="img-circle" alt="">
+                                    </div>
+                                    <div class="time">
+                                        @x.cmnt.comment_time
+                                    </div>
+                                </div>
+                                <div class="chat-message-body">
+                                    <span class="arrow"></span>
+                                    <div class="sender"><a href="#">@x.user.user_FullName</a></div>
+                                    <div class="text">
+                                        @x.cmnt.comment_data
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <footer class="chat-footer row">
+                    <div class="col-xs-9">
+                        <input id="message" type="text" class="form-control input-transparent" placeholder="Enter your message..">
+                        <input type="hidden" id="post_id" value="@Model.postData.post_Id" />
+                    </div>
+                    <div class="col-xs-3">
+                        <button type="button" id="message-btn" onclick="msgclick(this)" class="btn btn-transparent btn-block">Send</button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="loader-wrap hiding hide">
+    <i class="fa fa-circle-o-notch fa-spin"></i>
+</div>
+
+
+@section script{
+    <script>
+    function likeClick(x){
+    
+        var post_id = @Model.postData.post_Id;
+        if(post_id != undefined)
+        {
+            $.ajax({
+                url: "@Url.Action("addLike","Home")",
+                type: "POST",
+                data: JSON.stringify({post_id : post_id}),
+                contentType : "application/json",
+                success: function(result)
+                {
+                    if(result["success"] == "ok")
+                    {
+                        var c = @Model.likeData.Count + 1;
+                        $("#count").text(c);
+                    }
+                    else if(result["success"] == "already liked")
+                    {
+                        alert("you Already like this post");
+                    }
+                    else
+                    {
+                        alert("Exception");
+                    }
+                }
+            });
+        }
+    }
+
+
+        //$("#message-btn").on('click',
+        function msgclick(x){
+
+        var post_id = $("#post_id").val();
+        var comment = $("#message").val();
+
+        if(post_id != undefined && comment != undefined)
+        {
+            $.ajax({
+                url: "@Url.Action("AddComment","Home")",
+                type: "POST",
+                data: JSON.stringify({post_id : post_id, comment : comment}),
+                contentType : "application/json",
+                success: function(result)
+                {
+                    var objToday = new Date(),
+                weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+                dayOfWeek = weekday[objToday.getDay()],
+                domEnder = new Array( 'th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th' ),
+                dayOfMonth = today + (objToday.getDate() < 10) ? '0' + objToday.getDate() + domEnder[objToday.getDate()] : objToday.getDate() + domEnder[parseFloat(("" + objToday.getDate()).substr(("" + objToday.getDate()).length - 1))],
+                months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
+                curMonth = months[objToday.getMonth()],
+                curYear = objToday.getFullYear(),
+                curHour = objToday.getHours() > 12 ? objToday.getHours() - 12 : (objToday.getHours() < 10 ? "0" + objToday.getHours() : objToday.getHours()),
+                curMinute = objToday.getMinutes() < 10 ? "0" + objToday.getMinutes() : objToday.getMinutes(),
+                curSeconds = objToday.getSeconds() < 10 ? "0" + objToday.getSeconds() : objToday.getSeconds(),
+                curMeridiem = objToday.getHours() > 12 ? "PM" : "AM";
+                    var today = curHour + ":" + curMinute + " "+ curMeridiem+" " + dayOfMonth + " " + curMonth ;
+
+                    var res = '<div class="chat-message">'+
+                    '<div class="sender pull-left">'+
+                    '<div class="icon">'+
+                    '<img src=@Url.Content("/Content/profilePic/"+Session["UserId"]+".jpg") onerror="myfunction(this)" class="img-circle" alt="">'+
+                                '</div>'+
+                                '<div class="time">'+
+                                today+
+                                '</div></div>'+
+                                '<div class="chat-message-body"><span class="arrow"></span>'+
+                                '<div class="sender"><a href="#">@db.UserTables.Find(Convert.ToInt32(Session["UserId"].ToString())).user_FullName</a></div>'+
+                                '<div class="text">'+
+                                comment+'</div></div></div>';
+                    $(res).appendTo("#chat-messages");
+                    $("#message").val("");
+                }
+            });
+        }
+    }
+    function myfunction(x)
+    {
+        x.src = "@Url.Content("/Content/0.jpg")";
+    }
+    </script>
+<script src="~/Content/lib1/slimScroll/jquery.slimscroll.js"></script>
+<script src="~/Content/lib1/jquery.sparkline/index.js"></script>
+
+<script src="~/Content/lib1/backbone/backbone.js"></script>
+<script src="~/Content/lib1/backbone.localStorage/backbone.localStorage.js"></script>
+
+<script src="~/Content/lib1/d3/d3.js"></script>
+<script src="~/Content/lib1/nvd3/build/nv.d3.js"></script>
+
+<script src="~/Content/lib1/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="~/Content/lib1/select2/select2.js"></script>
+<script src="~/Content/lib1/moment/moment.js"></script>
+<script src="~/Content/lib1/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.js"></script>
+<script src="~/Content/lib1/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js"></script>
+<script src="~/Content/lib1/parsleyjs/dist/parsley.js"></script>
+<!-- page application js -->
+<script src="~/Scripts/js1/index.js"></script>
+<script src="~/Scripts/js1/chat.js"></script>
+<script src="~/Scripts/js1/forms-article.js"></script>
+    <!-- page template -->
+    <template id="message-template">
+        <div class="sender pull-left">
+            <div class="icon">
+                <img src=@Url.Content("/Content/profilePic/"+Session["UserId"]+".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" class="img-circle" alt="">
+            </div>
+            <div class="time">
+                just now
+            </div>
+        </div>
+        <div class="chat-message-body">
+            <span class="arrow"></span>
+            <div class="sender"><a href="#">@db.UserTables.Find(Convert.ToInt32(Session["UserId"].ToString())).user_FullName</a></div>
+            <text class="text commentText" id="commentText">
+            </text>
+        </div>
+    </template>
+}

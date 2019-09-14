@@ -1,0 +1,132 @@
+﻿@model List<FypNew.Models.notificationViewData>
+
+<section class="widget">
+    <header>
+        <h4>Table <span class="fw-semi-bold">Styles</span></h4>
+    </header>
+    <div class="body">
+        <div class="mt">
+            <table id="datatable-table" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th></th>
+                        <th>Team Lead</th>
+                        <th>Project/Idea Title</th>
+                        <th class="hidden-xs">Idea Description</th>
+                        <th class="hidden-xs">project detail</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                     foreach (var v in Model)
+                     {
+                        <tr>
+                            <td style="vertical-align:middle;">@i</td>
+                            <td style="vertical-align:middle;" onclick="location.href='@Url.Action("profile", "Home", new { id = v.userData.user_Id })'">
+                                <img class="img-rounded" src=@Url.Content("/Content/profilePic/" + v.userData.user_Id + ".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="" width="50" height="50">
+                            </td>
+                            <td style="vertical-align:middle;" onclick="location.href='@Url.Action("profile", "Home", new { id = v.userData.user_Id })'"><span class="fw-semi-bold">@v.userData.user_FullName</span></td>
+                            <td onclick="location.href='@Url.Action("ideaDetail", "Home", new { obj = v.postData.post_Id })'" align="center" style="vertical-align:middle;" class="hidden-xs">
+                                <span class="fw-semi-bold">@v.postData.post_title</span>
+                            </td>
+                            <td onclick="location.href='@Url.Action("ideaDetail", "Home", new { obj = v.postData.post_Id })'" style="vertical-align:middle;" class="hidden-xs">@v.postData.post_description</td>
+                            <td style="vertical-align:middle;" class="hidden-xs"><a href="@Url.Action("projectProgress", "Home", new { id = v.membersData.project_id })">Click For detail</a></td>
+                            <td style="vertical-align:middle;" class="width-150">
+                                <span id="checkBtn" data-memberId="@v.membersData.srNo" style="color:green; margin-right:7px;" class="glyphicon glyphicon-ok"></span><span id="crossBtn" data-memberId="@v.membersData.srNo" style="color:red;" class=" glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </td>
+                        </tr>
+                         i++;
+                     }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2><span class="glyphicon glyphicon-warning-sign"></span>Do you really want to join!</h2>
+            </div>
+            <div class="modal-body" style="padding:40px 50px; text-align:center">
+                <div style="display:inline;" class="btn-group-lg"> 
+                    <button type="button" data-memberId="" class="btn btn-success" id="joinBtn"><span class="glyphicon glyphicon-check"></span>Add</button>
+                    <button type="button" class="btn btn-warning" onclick="$('#myModal').modal('hide');" ><span class="glyphicon glyphicon-time"></span> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal2 -->
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2><span class="glyphicon glyphicon-warning-sign"></span>Do you really want to delete !!</h2>
+            </div>
+            <div class="modal-body" style="padding:40px 50px; text-align:center">
+                <div style="display:inline;" class="btn-group-lg">
+                    <button type="button" data-memberId="" class="btn btn-success" id="deleteBtn"><span class="glyphicon glyphicon-check"></span>Delete</button>
+                    <button type="button" class="btn btn-warning" onclick="$('#myModal2').modal('hide');"><span class="glyphicon glyphicon-time"></span>Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section script{
+    <script>
+        $("#checkBtn").click(function () {
+            $("#joinBtn").attr("data-memberId", $("#checkBtn").attr("data-memberId"));
+            $("#myModal").modal();
+        });
+        $("#crossBtn").click(function () {
+            $("#deleteBtn").attr("data-memberId", $("#crossBtn").attr("data-memberId"));
+            $("#myModal2").modal();
+        });
+        $("#deleteBtn").click(function () {
+            console.log($("#deleteBtn").attr("data-memberId"));
+            var ab = $("#deleteBtn").attr("data-memberId");
+            $.ajax({
+                url:"@Url.Action("deleteRequest", "Home")",
+                method:"post",
+                data: { "id" : ab},
+                success:function(data){
+                    window.location.href = '@Url.Action("notificationDetail", "home", new { uid =(int)Session["UserID"]})'
+                },
+                error : function(){
+                    alert("error");
+                }
+
+            });
+        });
+        $("#joinBtn").click(function () {
+            console.log($("#joinBtn").attr("data-memberId"));
+            var ab = $("#joinBtn").attr("data-memberId");
+            $.ajax({
+                url:"@Url.Action("approveRequest","Home")",
+                method:"post",
+                data:{"id":ab},
+                success:function(data){
+                    window.location.href='@Url.Action("notificationDetail", "home", new { uid =(int)Session["UserID"]})'
+                },
+                error : function(){
+                    alert("error");
+                }
+            });
+        });
+    </script>
+}

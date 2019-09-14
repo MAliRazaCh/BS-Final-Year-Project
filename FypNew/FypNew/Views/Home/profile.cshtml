@@ -1,0 +1,167 @@
+﻿@if(ViewBag.Message != null)
+{
+    @:alert(@ViewBag.Message);
+}
+@model FypNew.Models.UserTable
+     @{
+         var v = Model;
+         string picPath = "~/Content/ProfilePic/" + v.user_Id + ".jpg";
+         
+          <div class="content container">
+            <h2 class="page-title">@v.user_FullName</h2>
+            <div class="row">
+                <div class="col-md-10">
+                    <section class="widget">
+                        <header>
+                            <h4><i class="fa fa-user"></i> Account Profile </h4>
+                        </header>
+                        <div class="body">
+                            <form id="user-form" name="profileForm" class="form-horizontal form-label-left"
+                                  novalidate="novalidate"
+                                  method="post"
+                                  data-parsley-priority-enabled="false"
+                                  data-parsley-excluded="input[name=gender]" action="~/Home/UpdateProfile" enctype="multipart/form-data" >
+                                <input type="text" value=@v.user_Id hidden name="user_Id"/>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="text-align-center">
+                                            <img class="img-circle" id="profilePic2"  onclick="imgClick(this)" name="profilePic" src=@Url.Content(picPath) onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="64x64" style=" height: 150px; width:150px">
+                                            <input type="file" name="imgName" id="imgBtn" onchange="loadFile(event)" accept="image/*" style="display:none"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h3 class="mt-sm mb-xs">@v.user_FullName</h3>
+                                        <address>
+                                            <strong>@v.user_description</strong> <br>
+                                            <abbr title="Work email">e-mail:</abbr>@v.user_emailid<br>
+                                            <abbr title="Work Phone">phone:</abbr> @v.user_phoneNo
+                                        </address>
+                                    </div>
+                                </div>
+                       <div class="editDiv">
+                                <fieldset class="mt-sm">
+                                    <legend>Edit Account  </legend>
+                                </fieldset>
+                                <fieldset>
+                                    <legend class="section">Personal Info</legend>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" for="prefix">User Name</label>
+                                        <div class="col-sm-6"><input type="text" id="prefix" name="user_userName" onclick="readonly_message(this)" readonly class="form-control input-transparent" value=@v.user_userName></div><br /><br />
+                                        <div  hidden id ="msgDiv"class="alert alert-danger fade in">
+                                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                            <strong>Error!</strong>you can not change this
+                                        </div> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" for="first-name">Full Name <span class="required">*</span></label>
+                                        <div class="col-sm-6"><input type="text" id="first-name" name="user_FullName" required="required" class="form-control input-transparent" value='@v.user_FullName'></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="middle-name" class="control-label col-sm-4">User Description </label>
+                                        <div class="col-sm-8"><input id="middle-name" class="form-control input-transparent" type="text" name="user_description" value=@v.user_description></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Gender</label>
+                                        <div class="col-sm-8">
+                                            <div id="gender" class="btn-group" data-toggle="buttons">
+                                                <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                    <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
+                                                </label>
+                                                <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                    <input type="radio" name="gender" value="female" checked> Female
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date-of-birth" class="control-label col-sm-4">Date Of Birth <span class="required">*</span></label>
+                                        <div class="col-sm-6"><input id="date-of-birth" class="date-picker form-control input-transparent" required="required" type="text" name="user_DOB" value=@v.user_DOB></div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend class="section">Contact Info</legend>
+                                    <div class="form-group">
+                                        <label id="email-label" for="email" class="control-label col-sm-4">Email <span class="required">*</span></label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group">
+                                                <input id="email" type="email"
+                                                       data-trigger="change" required="required"
+                                                       class="form-control input-transparent"
+                                                       name="user_emailid" value=@v.user_emailid>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone" class="control-label col-sm-4">Cell no. <span class="required">*</span></label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group">
+                                                <input id="phone" class="form-control input-transparent  mask"
+                                                       required="required" type="text"
+                                                       name="user_phoneNo" maxlength="28" value=@v.user_phoneNo>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <fieldset>
+                                    <legend class="section">
+                                        Address
+
+                                    </legend>
+                                    <div class="form-group">
+                                        <label for="address" class="control-label col-sm-4">Address <span class="required">*</span></label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="input-group">
+                                                <input id="address" class="form-control input-transparent" type="text"
+                                                       name="user_address" value=@v.user_address>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-sm-offset-4">
+                                            <button type="submit" class="btn btn-primary">Validate &amp; Submit</button>
+                                            <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("homepage", "Home")';">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                            
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+        <div class="loader-wrap hiding hide">
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+        </div>
+     }
+    @section script{
+    <script>
+        function imgClick(x)
+        {
+            document.getElementById("imgBtn").click();
+        }
+        var loadFile = function(event)
+        {
+            var img = document.getElementById('profilePic2');
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function error(x)
+        {
+            document.getElementById('profilePic2').setAttribute("src" , "/Content/0.jpg");
+        }
+       
+        function readonly_message(x)
+        {
+            document.getElementById("msgDiv").hidden=false;
+        }
+    </script>
+
+          }      

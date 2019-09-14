@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities">
+    <EntitySetMapping Name="commentTables">
+      <EntityTypeMapping TypeName="DatabaseModel.commentTable">
+        <MappingFragment StoreEntitySet="commentTable">
+          <ScalarProperty Name="comment_Id" ColumnName="comment_Id" />
+          <ScalarProperty Name="comment_data" ColumnName="comment_data" />
+          <ScalarProperty Name="comment_time" ColumnName="comment_time" />
+          <ScalarProperty Name="comment_userID" ColumnName="comment_userID" />
+          <ScalarProperty Name="comment_postID" ColumnName="comment_postID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LikesTables">
+      <EntityTypeMapping TypeName="DatabaseModel.LikesTable">
+        <MappingFragment StoreEntitySet="LikesTable">
+          <ScalarProperty Name="like_Id" ColumnName="like_Id" />
+          <ScalarProperty Name="like_time" ColumnName="like_time" />
+          <ScalarProperty Name="like_userID" ColumnName="like_userID" />
+          <ScalarProperty Name="like_postID" ColumnName="like_postID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PostTables">
+      <EntityTypeMapping TypeName="DatabaseModel.PostTable">
+        <MappingFragment StoreEntitySet="PostTable">
+          <ScalarProperty Name="post_tags" ColumnName="post_tags" />
+          <ScalarProperty Name="post_Id" ColumnName="post_Id" />
+          <ScalarProperty Name="post_data" ColumnName="post_data" />
+          <ScalarProperty Name="post_userID" ColumnName="post_userID" />
+          <ScalarProperty Name="post_time" ColumnName="post_time" />
+          <ScalarProperty Name="post_title" ColumnName="post_title" />
+          <ScalarProperty Name="post_description" ColumnName="post_description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="projectDatas">
+      <EntityTypeMapping TypeName="DatabaseModel.projectData">
+        <MappingFragment StoreEntitySet="projectData">
+          <ScalarProperty Name="srNo" ColumnName="srNo" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="date" ColumnName="date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectsTables">
+      <EntityTypeMapping TypeName="DatabaseModel.ProjectsTable">
+        <MappingFragment StoreEntitySet="ProjectsTable">
+          <ScalarProperty Name="project_id" ColumnName="project_id" />
+          <ScalarProperty Name="teamLead_id" ColumnName="teamLead_id" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="teamMembersTables">
+      <EntityTypeMapping TypeName="DatabaseModel.teamMembersTable">
+        <MappingFragment StoreEntitySet="teamMembersTable">
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="request" ColumnName="request" />
+          <ScalarProperty Name="srNo" ColumnName="srNo" />
+          <ScalarProperty Name="project_id" ColumnName="project_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTables">
+      <EntityTypeMapping TypeName="DatabaseModel.UserTable">
+        <MappingFragment StoreEntitySet="UserTable">
+          <ScalarProperty Name="user_Id" ColumnName="user_Id" />
+          <ScalarProperty Name="user_userName" ColumnName="user_userName" />
+          <ScalarProperty Name="user_userPassword" ColumnName="user_userPassword" />
+          <ScalarProperty Name="user_address" ColumnName="user_address" />
+          <ScalarProperty Name="user_phoneNo" ColumnName="user_phoneNo" />
+          <ScalarProperty Name="user_type" ColumnName="user_type" />
+          <ScalarProperty Name="user_emailid" ColumnName="user_emailid" />
+          <ScalarProperty Name="user_description" ColumnName="user_description" />
+          <ScalarProperty Name="user_FullName" ColumnName="user_FullName" />
+          <ScalarProperty Name="user_DOB" ColumnName="user_DOB" />
+          <ScalarProperty Name="user_gender" ColumnName="user_gender" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GroupPosts">
+      <EntityTypeMapping TypeName="DatabaseModel.GroupPost">
+        <MappingFragment StoreEntitySet="GroupPost">
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

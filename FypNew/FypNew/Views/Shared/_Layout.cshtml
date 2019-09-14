@@ -1,0 +1,294 @@
+﻿@{
+    if (Session["UserID"] == null)
+    {
+        Response.Redirect(Url.Action("login", "Home"));
+    }
+}
+    <title>
+        @ViewBag.Title
+    </title>
+    @Scripts.Render("~/bundles/jquery")
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Styles.Render("~/Content/themes/base/css")
+
+    <link href="~/Content/css1/application.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/font-awesome/css/font-awesome.css" />
+    <link rel="shortcut icon" href="~/Content/img1/favicon.png">
+    <meta http-equiv="content-type" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <script>
+        /* yeah we need this empty stylesheet here. It's cool chrome & chromium fix
+           chrome fix https://code.google.com/p/chromium/issues/detail?id=167083
+                      https://code.google.com/p/chromium/issues/detail?id=332189
+        */
+    </script>
+    <style>
+        #profilePic {
+            margin-left: 50px;
+        }
+        .mrg {
+            margin-top: 10px;
+        }
+    </style>
+<div class="background-dark">
+    <div class="logo">
+        <h4><a href='@Url.Action("homepage" , "Home")'>IDEA <strong>SHARE</strong></a></h4>
+    </div>
+    <nav id="sidebar" class="sidebar nav-collapse collapse">
+        <!------------------------------------------------------------------------------------------->
+        <!--@{
+        string picPath = "~/Content/ProfilePic/" + Session["UserID"] + ".jpg";
+        }-->
+        <a href="@Url.Action("Profile", "Home", new { id = Session["UserID"] })">
+            <img class="img-circle" id="profilePic" name="profilePic" onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" src=@Url.Content(picPath) alt="64x64" style=" height: 50px; width:50px">
+        </a>
+
+        <ul id="side-nav" class="side-nav">
+            <li class="">
+                <a href="@Url.Action("homepage", "Home")"><i class="fa fa-home"></i> <span class="name">Home</span></a>
+            </li>
+            <li class="panel active">
+                <a class="accordion-toggle collapsed" data-toggle="collapse"
+                   data-parent="#side-nav" href="#forms-collapse"><i class="fa fa-pencil"></i><span class="name"> Ideas</span></a>
+                <ul id="forms-collapse" class="panel-collapse collapse ">
+                    <li role="presentation">
+                        <a class="link" href="@Url.Action("postIdea" , "Home")">
+                            <i class="fa fa-plus-square"></i>
+                            Post Idea
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="link" href="@Url.Action("myIdeas", "Home", new {id  = Session["UserID"] })">
+                            <i class="fa fa-info-circle"></i>
+                            my Ideas
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="panel ">
+                <a class="accordion-toggle collapsed" data-toggle="collapse"
+                   data-parent="#side-nav" href="#stats-collapse"><i class="fa fa-area-chart"></i><span class="name">Account</span></a>
+                <ul id="stats-collapse" class="panel-collapse collapse ">
+                    <li role="presentation">
+                        <a class="link" href="@Url.Action("myProjects", "Home", new {id = Session["UserID"] })">
+                            <i class="fa fa-info-circle"></i>
+                            My Projects
+                        </a>
+                    </li>
+                    <li class="link">
+                        <a href="@Url.Action("profile", "Home", new {id = Session["UserID"] })">
+                            <i class="fa fa-user"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("SignOut" , "Home" )"><i class="fa fa-sign-out"></i> <span class="name">Sign Out</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li class="panel ">
+                <a href="@Url.Action("allProjects","Home")"><i class="fa fa-magic"></i><span class="name">All Projects</span></a>
+                <ul id="ui-collapse" class="panel-collapse collapse ">
+                    <li class=""><a href="">Buttons</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <!-------------------------------------------------------------------------------------------------->
+    <div class="wrap">
+        <header class="page-header">
+            <div class="navbar">
+                <ul class="nav navbar-nav navbar-right pull-right">
+                    <li class="visible-phone-landscape">
+                        <a href="#" id="search-toggle">
+                            <i class="fa fa-search">hello</i>
+                        </a>
+                    </li>
+                    <li class="dropdown mrg">
+                        <a href="@Url.Action("notificationDetail", "Home", new { uid = Session["UserID"] })" title="projects request">
+                            <i class="fa fa-group"></i>
+                            <span id="notificationCount" class="count">8</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+
+                    <li class="hidden-xs mrg">
+                        <a href="#" id="settings"
+                           title="Settings"
+                           data-toggle="popover"
+                           data-placement="bottom">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                    </li>
+
+                    <li class="hidden-xs dropdown mrg">
+                        <a href="#" title="Account" id="account"
+                           class="dropdown-toggle"
+                           data-toggle="dropdown">
+                            <i class="fa fa-user"></i>
+                        </a>
+                        <ul id="account-menu" class="dropdown-menu account" role="menu">
+                            <li role="presentation" class="account-picture">
+                                @{
+                                    <div class="wrapper">
+                                        <a href="@Url.Action("Profile", "Home", new { id = Session["UserID"] })">
+                                            <img id="profilePic" name="profilePic" src=@Url.Content(picPath) onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="64x64" style=" height: 30px; width:30px">
+                                        </a>
+                                        <p id="userName" style="width:60% ; display : inline"></p>
+                                    </div>
+                                }
+
+                            </li>
+                            <li role="presentation">
+                                <a class="link" href="@Url.Action("profile", "Home", new { id = Session["UserID"] })">
+                                    <i class="fa fa-user"></i>
+                                    Profile
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a class="link" href="@Url.Action("myProjects", "Home", new {id = Session["UserID"] })">
+                                    <i class="fa fa-info-circle"></i>
+                                    my Projects
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a class="link" href="@Url.Action("myIdeas", "Home", new {id  = Session["UserID"] })">
+                                    <i class="fa fa-inbox"></i>
+                                    my Ideas
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="visible-xs mrg">
+                        <a href="#"
+                           class="btn-navbar"
+                           data-toggle="collapse"
+                           data-target=".sidebar"
+                           title="">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </li>
+                    <li class="hidden-xs mrg"><a href="@Url.Action("Login" , "Home" )" onclick="delSession(this)"><i class="fa fa-sign-out"></i></a></li>
+                </ul>
+                <form id="search-form" class="navbar-form pull-right" action="@Url.Action("search" , "Home")" role="search">
+                    <input type="search" name="searchproject" class="form-control search-query" placeholder="Search Idea">
+                </form>
+            </div>
+        </header>
+
+        <div class="loader-wrap hiding hide">
+            <i class="fa fa-circle-o-notch fa-spin"></i>
+        </div>
+        <div class="pageStart">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </div>
+        @Scripts.Render("~/AllScripts")
+        @RenderSection("script", required: false)
+</div>
+        
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("userData", "Home")",
+                method: "post",
+                data: {"Value" : @((int)Session["UserID"])},
+                success: function (data) {
+                    $("#userName").text(data)
+                },
+            });
+        });
+    </script>
+    <!-- common templates -->
+    <script type="text/template" id="settings-template">
+        <div class="setting clearfix">
+            <div>Background</div>
+            <div id="background-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+                <% dark = background == 'dark'; light = background == 'light';%>
+                <button type="button" data-value="dark" class="btn btn-sm btn-default <%= dark? 'active' : '' %>">Dark</button>
+                <button type="button" data-value="light" class="btn btn-sm btn-default <%= light? 'active' : '' %>">Light</button>
+            </div>
+        </div>
+        <div class="setting clearfix">
+            <div>Sidebar on the</div>
+            <div id="sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+                <% onRight = sidebar == 'right'%>
+                <button type="button" data-value="left" class="btn btn-sm btn-default <%= onRight? '' : 'active' %>">Left</button>
+                <button type="button" data-value="right" class="btn btn-sm btn-default <%= onRight? 'active' : '' %>">Right</button>
+            </div>
+        </div>
+        <div class="setting clearfix">
+            <div>Sidebar</div>
+            <div id="display-sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+                <% display = displaySidebar%>
+                <button type="button" data-value="true" class="btn btn-sm btn-default <%= display? 'active' : '' %>">Show</button>
+                <button type="button" data-value="false" class="btn btn-sm btn-default <%= display? '' : 'active' %>">Hide</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="sidebar-settings-template">
+        <% auto = sidebarState == 'auto'%>
+        <% if (auto) {%>
+        <button type="button"
+                data-value="icons"
+                class="btn-icons btn btn-transparent btn-sm">
+            Icons
+        </button>
+        <button type="button"
+                data-value="auto"
+                class="btn-auto btn btn-transparent btn-sm">
+            Auto
+        </button>
+        <%} else {%>
+        <button type="button"
+                data-value="auto"
+                class="btn btn-transparent btn-sm">
+            Auto
+        </button>
+        <% } %>
+    </script>
+    <!-----------------Notification----------------------------->
+    <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="/signalr/hubs"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+
+
+    <script type="text/javascript">
+        $(function () {
+            // Declare a proxy to reference the hub.
+            var notifications = $.connection.notificationHub;
+
+            //debugger;
+            // Create a function that the hub can call to broadcast messages.
+            notifications.client.updatenotifications = function () {
+                getAllMessages()
+
+            };
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+                getAllMessages();
+            }).fail(function (e) {
+                alert(e);
+            });
+        });
+     
+        function getAllMessages() {
+            $.ajax({
+                url: '/Home/getNotificationsCount',
+                type: 'POST',
+                data: {"uId" : @((int)Session["UserID"])},
+            }).success(function (result) {
+                $("#notificationCount").text(result);
+            }).error(function () {
+
+            });
+        }
+    </script>
+</div>

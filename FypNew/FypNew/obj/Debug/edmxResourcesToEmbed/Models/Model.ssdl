@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="commentTable">
+    <Key>
+      <PropertyRef Name="comment_Id" />
+    </Key>
+    <Property Name="comment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="comment_data" Type="varchar(max)" Nullable="false" />
+    <Property Name="comment_time" Type="datetime" Nullable="false" />
+    <Property Name="comment_userID" Type="int" Nullable="false" />
+    <Property Name="comment_postID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GroupPost">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="userID" Type="int" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+    <Property Name="data" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LikesTable">
+    <Key>
+      <PropertyRef Name="like_Id" />
+    </Key>
+    <Property Name="like_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="like_time" Type="datetime" Nullable="false" />
+    <Property Name="like_userID" Type="int" Nullable="false" />
+    <Property Name="like_postID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PostTable">
+    <Key>
+      <PropertyRef Name="post_Id" />
+    </Key>
+    <Property Name="post_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="post_data" Type="varchar(max)" Nullable="false" />
+    <Property Name="post_userID" Type="int" Nullable="false" />
+    <Property Name="post_time" Type="datetime" />
+    <Property Name="post_title" Type="varchar(max)" Nullable="false" />
+    <Property Name="post_description" Type="varchar(max)" Nullable="false" />
+    <Property Name="post_tags" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="projectData">
+    <Key>
+      <PropertyRef Name="srNo" />
+    </Key>
+    <Property Name="srNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="link" Type="varchar(max)" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectsTable">
+    <Key>
+      <PropertyRef Name="project_id" />
+    </Key>
+    <Property Name="project_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="teamLead_id" Type="int" Nullable="false" />
+    <Property Name="startDate" Type="date" Nullable="false" />
+    <Property Name="endDate" Type="date" Nullable="false" />
+    <Property Name="post_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="teamMembersTable">
+    <Key>
+      <PropertyRef Name="srNo" />
+    </Key>
+    <Property Name="srNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="project_id" Type="int" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="request" Type="bit" Nullable="false" />
+    <Property Name="time" Type="date" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="user_Id" />
+    </Key>
+    <Property Name="user_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_userName" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="user_userPassword" Type="varchar(max)" Nullable="false" />
+    <Property Name="user_address" Type="varchar(max)" />
+    <Property Name="user_phoneNo" Type="varchar" MaxLength="50" />
+    <Property Name="user_type" Type="bit" Nullable="false" />
+    <Property Name="user_emailid" Type="varchar(max)" />
+    <Property Name="user_description" Type="varchar(max)" />
+    <Property Name="user_FullName" Type="varchar(max)" Nullable="false" />
+    <Property Name="user_DOB" Type="date" Nullable="false" />
+    <Property Name="user_gender" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__GroupPost__proje__2C1E8537">
+    <End Role="ProjectsTable" Type="Self.ProjectsTable" Multiplicity="1" />
+    <End Role="GroupPost" Type="Self.GroupPost" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectsTable">
+        <PropertyRef Name="project_id" />
+      </Principal>
+      <Dependent Role="GroupPost">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__GroupPost__userI__2D12A970">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="GroupPost" Type="Self.GroupPost" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="GroupPost">
+        <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__projectDa__proje__6FE99F9F">
+    <End Role="ProjectsTable" Type="Self.ProjectsTable" Multiplicity="1" />
+    <End Role="projectData" Type="Self.projectData" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectsTable">
+        <PropertyRef Name="project_id" />
+      </Principal>
+      <Dependent Role="projectData">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectsT__post___5AEE82B9">
+    <End Role="PostTable" Type="Self.PostTable" Multiplicity="1" />
+    <End Role="ProjectsTable" Type="Self.ProjectsTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PostTable">
+        <PropertyRef Name="post_Id" />
+      </Principal>
+      <Dependent Role="ProjectsTable">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectsT__teamL__49C3F6B7">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="ProjectsTable" Type="Self.ProjectsTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="ProjectsTable">
+        <PropertyRef Name="teamLead_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__teamMembe__proje__4CA06362">
+    <End Role="ProjectsTable" Type="Self.ProjectsTable" Multiplicity="1" />
+    <End Role="teamMembersTable" Type="Self.teamMembersTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectsTable">
+        <PropertyRef Name="project_id" />
+      </Principal>
+      <Dependent Role="teamMembersTable">
+        <PropertyRef Name="project_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__teamMembe__user___4D94879B">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="teamMembersTable" Type="Self.teamMembersTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="teamMembersTable">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_commentTable_TopostTable_1">
+    <End Role="PostTable" Type="Self.PostTable" Multiplicity="1" />
+    <End Role="commentTable" Type="Self.commentTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PostTable">
+        <PropertyRef Name="post_Id" />
+      </Principal>
+      <Dependent Role="commentTable">
+        <PropertyRef Name="comment_postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_commentTable_TouserTable">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="commentTable" Type="Self.commentTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="commentTable">
+        <PropertyRef Name="comment_userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikesTable_postTable">
+    <End Role="PostTable" Type="Self.PostTable" Multiplicity="1" />
+    <End Role="LikesTable" Type="Self.LikesTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PostTable">
+        <PropertyRef Name="post_Id" />
+      </Principal>
+      <Dependent Role="LikesTable">
+        <PropertyRef Name="like_postID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikesTable_userTable">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="LikesTable" Type="Self.LikesTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="LikesTable">
+        <PropertyRef Name="like_userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PostTable_userTable">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+    <End Role="PostTable" Type="Self.PostTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="user_Id" />
+      </Principal>
+      <Dependent Role="PostTable">
+        <PropertyRef Name="post_userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="commentTable" EntityType="Self.commentTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GroupPost" EntityType="Self.GroupPost" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LikesTable" EntityType="Self.LikesTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PostTable" EntityType="Self.PostTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="projectData" EntityType="Self.projectData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectsTable" EntityType="Self.ProjectsTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="teamMembersTable" EntityType="Self.teamMembersTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__GroupPost__proje__2C1E8537" Association="Self.FK__GroupPost__proje__2C1E8537">
+      <End Role="ProjectsTable" EntitySet="ProjectsTable" />
+      <End Role="GroupPost" EntitySet="GroupPost" />
+    </AssociationSet>
+    <AssociationSet Name="FK__GroupPost__userI__2D12A970" Association="Self.FK__GroupPost__userI__2D12A970">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="GroupPost" EntitySet="GroupPost" />
+    </AssociationSet>
+    <AssociationSet Name="FK__projectDa__proje__6FE99F9F" Association="Self.FK__projectDa__proje__6FE99F9F">
+      <End Role="ProjectsTable" EntitySet="ProjectsTable" />
+      <End Role="projectData" EntitySet="projectData" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectsT__post___5AEE82B9" Association="Self.FK__ProjectsT__post___5AEE82B9">
+      <End Role="PostTable" EntitySet="PostTable" />
+      <End Role="ProjectsTable" EntitySet="ProjectsTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectsT__teamL__49C3F6B7" Association="Self.FK__ProjectsT__teamL__49C3F6B7">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="ProjectsTable" EntitySet="ProjectsTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK__teamMembe__proje__4CA06362" Association="Self.FK__teamMembe__proje__4CA06362">
+      <End Role="ProjectsTable" EntitySet="ProjectsTable" />
+      <End Role="teamMembersTable" EntitySet="teamMembersTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK__teamMembe__user___4D94879B" Association="Self.FK__teamMembe__user___4D94879B">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="teamMembersTable" EntitySet="teamMembersTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_commentTable_TopostTable_1" Association="Self.FK_commentTable_TopostTable_1">
+      <End Role="PostTable" EntitySet="PostTable" />
+      <End Role="commentTable" EntitySet="commentTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_commentTable_TouserTable" Association="Self.FK_commentTable_TouserTable">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="commentTable" EntitySet="commentTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikesTable_postTable" Association="Self.FK_LikesTable_postTable">
+      <End Role="PostTable" EntitySet="PostTable" />
+      <End Role="LikesTable" EntitySet="LikesTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikesTable_userTable" Association="Self.FK_LikesTable_userTable">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="LikesTable" EntitySet="LikesTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PostTable_userTable" Association="Self.FK_PostTable_userTable">
+      <End Role="UserTable" EntitySet="UserTable" />
+      <End Role="PostTable" EntitySet="PostTable" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

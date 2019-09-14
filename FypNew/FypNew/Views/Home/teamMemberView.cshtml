@@ -1,0 +1,329 @@
+﻿@{
+    ViewBag.Title = "teamMemberView";
+}
+
+@model FypNew.Models.projectProgress2
+<script type="text/javascript">
+    @if (ViewBag.AlertMessage != null)
+    {
+        @:alert(ViewBag.AlertMessage);
+                }
+</script>
+
+<link href="~/plugin/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+<div class="content container">
+    <div align="center" class="col-lg-7">
+        <h2 class="page-title">Components -  <span class="fw-semi-bold">Fileupload</span> </h2>
+        <div class="row" id="uploadDiv">
+            <div class="col-md-10 ">
+                <section class="widget">
+                    <div class="body">
+                        <form id="fileupload" action="@Url.Action("projectData" , "Home")" method="POST" enctype="multipart/form-data">
+                            <input id="input-id" accept="image/* ,application/pdf" name="img" type="file" class="file" data-preview-file-type="text">
+                            <input id="projectId" hidden name="pid" value="@Model.projectID">
+                          </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10" align="center">
+                <section class="widget" align="center">
+                    <header>
+                        <h4>
+                            <i class="fa fa-star"></i>
+                            Grid of images
+                        </h4>
+                    </header>
+                    <div class="body" align="center">
+                        <ul id="grid" class="row thumbnails">
+
+                            @if (Model.projectdata.Count > 0)
+                            {
+                                foreach (var v in Model.projectdata)
+                                {
+                                    string vs = "~/Content/projectsData/" + v.link;
+                                    if (!v.link.Contains(".pdf"))
+                                    {<li class="col-sm-4">
+                                        <a href=@Url.Content(vs) class="thumbnail">
+                                            <img src=@Url.Content(vs) alt="">
+                                        </a>
+                                    </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5" style="float:right;">
+        <section class=" widget" align="center">
+        <h2 class="widget-about">Team <span class="fw-semi-bold">Members</span></h2>
+        <div class="body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="hidden-xs">#</th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Detail</th>
+                        <th>Request</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    <tr onclick="location.href='@Url.Action("profile", "Home", new {id=Model.teamLead.user_Id })'">
+                        <td style="vertical-align:middle">
+                            <text>Team Leader</text>
+                        </td>
+                        <td>
+                            <img class="img-rounded" src=@Url.Content("/Content/profilePic/" + Model.teamLead.user_Id + ".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="" height="50" width="50">
+                        </td>
+                        <td style="vertical-align:middle">
+                            <text>@Model.teamLead.user_FullName</text>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <text>
+                                @Model.teamLead.user_description
+                            </text>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <text>
+                                <span class="glyphicon glyphicon-check" style="color:green">Approved</span>
+                            </text>
+                        </td>
+                    </tr>
+
+
+                    @{
+                        var i = 1;
+                        foreach (var v in Model.usesrData)
+                        {
+                            <tr onclick="location.href='@Url.Action("profile", "Home", new { id = v.user_Id })'">
+                                <td style="vertical-align:middle;">
+                                    <p>@i</p>
+                                </td>
+                                <td>
+                                    <img class="img-rounded" src=@Url.Content("/Content/profilePic/" + v.user_Id + ".jpg") onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="" width="50" height="50">
+                                </td>
+                                <td style="vertical-align:middle;">
+                                    <text>@v.user_FullName</text>
+                                </td>
+                                <td style="vertical-align:middle;">
+                                    <text>
+                                        @v.user_description
+                                    </text>
+                                </td>
+                                <td style="vertical-align:middle;">
+
+                                    @if (v.teamMembersTables.Where(r => r.user_id == v.user_Id && r.project_id == Model.projectID).FirstOrDefault().request)
+                                    {
+                                        <text>
+                                            <span class="glyphicon glyphicon-check" style="color:green">Approved</span>
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        <text>
+                                            <span class="glyphicon glyphicon-alert" style="color:yellow">Waiting</span>
+                                        </text>
+                                    }
+
+
+                                </td>
+                            </tr>
+                                    i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        </section>
+        <section class="widget" align="center">
+            <h2 class="widget-about">Team <span class="fw-semi-bold">Messages</span></h2>
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span> Chat
+                    </div>
+                    <div class="panel-body">
+                        <ul class="chat" id="chatList">
+                            @foreach (var v in Model.messagesDetail)
+                            {
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <img src="@Url.Content("/Content/profilePic/" + v.sender.user_Id + ".jpg")" onerror="this.onerror=null ; this.src='@Url.Content("/Content/0.jpg")';" alt="User Avatar" class="img-circle" style="height:50px;width:50px;" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">@v.sender.user_FullName</strong>
+                                            <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>@v.msg.time
+                                            </small>
+                                        </div>
+                                        <p style="color:aliceblue">
+                                            @v.msg.data
+                                        </p>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="inputText" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning btn-sm" id="chatBtn">
+                                    Send
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="widget" align="center">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span>Documents List
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="hidden-xs">#</th>
+                                    <th>file Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var j = 1;
+                                    if (Model.projectdata.Count > 0)
+                                    {
+                                        foreach (var d in Model.projectdata)
+                                        {
+                                            
+                                            if (d.link.Contains(".pdf"))
+                                            {
+                                                <tr>
+                                                    <td>@j</td>
+                                                    <td id="@d.link" onclick="openDialog(this)">
+                                                        @d.link
+                                                    </td>
+                                                </tr>
+                                                j++;
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="loader-wrap hiding hide">
+    <i class="fa fa-circle-o-notch fa-spin"></i>
+</div>
+
+<!------modal-->
+<div class="modal modal-lg fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
+            </div>
+            <div class="modal-body">
+               <iframe height="500px" width="500px" id="frameId" src=""></iframe>
+            </div>
+           
+        </div>
+
+    </div>
+</div>
+ 
+@section script{
+    <!-- canvas-to-blob.min.js is only needed if you wish to resize images before upload.
+         This must be loaded before fileinput.min.js -->
+    <script src="~/plugin/js/plugins/canvas-to-blob.js" type="text/javascript"></script>
+    <script src="~/plugin/js/fileinput.js"></script>
+    <!-- page specific libs -->
+    <script src="~/Content/lib1/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    <!-- page application js -->
+    <script src="~/Scripts/js1/component-gallery.js"></script>
+
+<script>
+    function openDialog(x){
+        var lnk = "/Content/projectsData/" + x.id;
+        $("#frameId").attr("src" , lnk);
+        $("#myModal").modal();
+    }
+
+
+    $("#chatBtn").click(function(){
+        var msg  = $("#inputText").val();
+        var obj ={"data":msg,
+            "projectId":@Model.projectID,
+        "userId":@Model.loginUser.user_Id}
+    
+        var msg2 =  JSON.stringify(obj);
+        if(msg!= null || msg != "")
+        {
+            $.ajax({
+                url:'@Url.Action("addGrpMessage", "Home")',
+                method:"post",
+                data:{"msg" : msg2},
+                success:function(data){
+                    if(data)
+                    {
+                        var crtime = currentTime();
+                        var newlist ='<li class="left clearfix"><span class="chat-img pull-left"><img src="@Url.Content("/Content/profilePic/" + Model.loginUser.user_Id + ".jpg")" onerror="this.onerror=null ; this.src=" @Url.Content("/Content/0.jpg") ";" alt="User Avatar" class="img-circle" style="height:50px;width:50px;" /></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">@Model.loginUser.user_FullName</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+crtime+'</small></div><p style="color:aliceblue">'+msg+'</p></div></li>'
+                        $("#chatList").append(newlist);
+                    }
+                },
+                error:function(){
+                    alert("message can not be sent!!!!");
+                }
+            })
+        }
+    });
+
+    function currentTime() {
+        var date = new Date();
+        var currDate = date.getDate();
+        var hours = date.getHours();
+        var dayName = getDayName(date.getDay());
+        var minutes = date.getMinutes();
+        var monthName = getMonthName(date.getMonth());
+        var year = date.getFullYear();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = dayName + ' ' + monthName + ' ' + currDate + ' ' + year + ' ' + hours + ':' + minutes + ' ' + ampm;
+        return(strTime);
+    }
+
+    function getMonthName(month) {
+        var ar = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        return ar[month];
+    }
+
+    function getDayName(day) {
+        var ar1 = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+        return ar1[day];
+    }
+</script>
+
+}

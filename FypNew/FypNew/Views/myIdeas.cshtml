@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "myIdeas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="pageStart">
+@model IEnumerable<FypNew.Models.PostTable>
+    @foreach(var v in Model)
+    {
+        <div class="form-group">
+            <div class="col-sm-9">
+                <img class="img-thumbnail" name="profilePic" onerror="error(this)" src="@Url.Content(String.Format("~/Content/profilePic/" + v.post_userID + ".jpg"))" onclick="mouseClick(this)" alt="64x64" style="height: 50px;width:50px;" id="@v.post_userID" /><br />
+                <label type=" button" class="btn btn-default" style="font-weight:bold">Idea Title: @v.post_title</label>
+                <textarea rows="8" readonly class="form-control input-transparent" name="post_data" id="content">@v.post_data</textarea>
+            </div>
+        </div>
+        <form hidden action="/Home/profile" method="post">
+            <input type="text" name="id" value="@v.post_userID" />
+            <input class=@v.post_userID type="submit" />
+        </form>
+    }
+</div>
+<br /><br /><br />
+@section scripts{
+    <script>
+        function mouseClick(x)
+        {
+            $("." + x.id).trigger("click");
+        }
+        function error(x)
+        {
+            document.getElementsByName('profilePic').src = '~/Content/0.jpg'
+        }
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "updatemembers";
+    if (Session["UserID"] == null)
+    {
+        Response.Redirect(Url.Action("login", "Home"));
+    }
+}
+@model System.Collections.Generic.IEnumerable<FypNew.Models.UserTable>
+   
+    <div class="widget-body">
+        <h3>Select <span class="fw-semi-bold">Team Members</span></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Skills</th>
+                    <th>userName</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var v in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <input id="@v.user_Id" type="checkbox">
+                                <label for="@v.user_Id"></label>
+                            </div>
+                        </td>
+                        <td>@v.user_FullName</td>
+                        <td>@v.user_description</td>
+                        <td>@v.user_userName</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="visits-info well well-sm  col-sm-2">
+            <button type="button" class="btn btn-default" onclick="startProject(this)">Start Project</button>
+        </div>
+
+        <br><br>
+    </div>
+
+    @section script{
+        <script>
+            function startProject(x)
+            {
+                var list1=[];
+                @foreach( var v in Model )
+                  {
+                           @:if ($("#" + "@v.user_Id").is(':checked'))
+                                    @:{
+                                    @:   list1.push(@v.user_Id);
+                                    @:}
+                  }
+                    list2 =JSON.stringify(list1)
+                $.ajax({
+                    url:'@Url.Action("updateProject" , "Home")',
+                    data:{list :  list2 },
+                    type: "POST",
+                    success: function (data) {
+                           location.href="@Url.Action("projectProgress", "Home")";
+                    },
+                    error:function(x)
+                    {
+                        alert(x);
+                    }
+                });
+            }
+        </script>
+    }

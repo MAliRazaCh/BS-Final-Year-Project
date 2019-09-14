@@ -1,0 +1,67 @@
+﻿@model FypNew.Models.membersList
+<div class="background-dark">
+    <div class="widget-body">
+        <h3>Select <span class="fw-semi-bold">Team Members</span></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Skills</th>
+                    <th>userName</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var v in Model.users)
+                {
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <input id="@v.user_Id" type="checkbox">
+                                <label for="@v.user_Id"></label>
+                            </div>
+                        </td>
+                        <td>@v.user_FullName</td>
+                        <td>@v.user_description</td>
+                        <td>@v.user_userName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="visits-info well well-sm  col-sm-2">
+            <button type="button" class="btn btn-default" onclick="addMembers(this)">Start Project</button>
+        </div>
+
+        <br><br>
+    </div>
+
+    @section script{
+        <script>
+            function addMembers(x)
+            {
+                var list1=[];
+                @foreach( var v in Model.users)
+                  {
+                           @:if ($("#" + "@v.user_Id").is(':checked'))
+                                    @:{
+                                    @:   list1.push(@v.user_Id);
+                                    @:}
+                  }
+                    list2 =JSON.stringify(list1)
+                $.ajax({
+                    url:'@Url.Action("addSelectedMembers" , "Home")',
+                    data:{list :  list2 , pid : @Model.projectID},
+                    type: "POST",
+                    success: function (data) {
+                           alert(data);
+                           location.href="@Url.Action("projectProgress", "Home" , new{id=Model.projectID})";
+                    },
+                    error:function(x)
+                    {
+                        alert(x);
+                    }
+                });
+            }
+        </script>
+    }
+</div>

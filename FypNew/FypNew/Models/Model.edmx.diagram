@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b477a8a1e98e46e695d7c59fdd5f1e5a" Name="Diagram1" ZoomLevel="91">
+        <EntityTypeShape EntityType="DatabaseModel.commentTable" Width="1.5" PointX="4.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.LikesTable" Width="1.5" PointX="5.625" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.PostTable" Width="1.5" PointX="2.5" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.projectData" Width="1.5" PointX="10.5" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.ProjectsTable" Width="1.5" PointX="8.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.teamMembersTable" Width="1.5" PointX="10.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.UserTable" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_commentTable_TopostTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_commentTable_TouserTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_LikesTable_postTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_LikesTable_userTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__ProjectsT__post___5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_PostTable_userTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__projectDa__proje__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__ProjectsT__teamL__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__teamMembe__proje__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK__teamMembe__user___4D94879B" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DatabaseModel.GroupPost" Width="1.5" PointX="13.5" PointY="8" />
+        <AssociationConnector Association="DatabaseModel.FK__GroupPost__proje__2C1E8537" />
+        <AssociationConnector Association="DatabaseModel.FK__GroupPost__userI__2D12A970" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
